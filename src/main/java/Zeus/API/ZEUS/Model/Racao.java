@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "racao")
+@Table(name = "pets")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,9 +21,9 @@ public class Racao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private int kgQuantidade;
-    private BigDecimal valorPago;
-    private LocalDate DataCompra;
+    private int kg;
+    private String historicoMedico;
+    private String idade;
     private boolean ativo;
 
     @ManyToOne
@@ -32,9 +32,9 @@ public class Racao {
 
     public Racao (DadosCadastrosRacao dadosCadastro){
         this.nome = dadosCadastro.nome();
-        this.kgQuantidade = dadosCadastro.kgQuantidade();
-        this.valorPago = dadosCadastro.valorPago();
-        this.DataCompra = dadosCadastro.dataCompra();
+        this.kg = dadosCadastro.kg();
+        this.historicoMedico = dadosCadastro.historicoMedico();
+        this.idade = dadosCadastro.idade();
         this.ativo = true;
     }
 
@@ -50,13 +50,20 @@ public class Racao {
         this.ativo = false;
     }
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getKg() {
+        return kg;
+    }
+
+    public void setKg(int kg) {
+        this.kg = kg;
     }
 
     public String getNome() {
@@ -67,28 +74,20 @@ public class Racao {
         this.nome = nome;
     }
 
-    public int getKgQuantidade() {
-        return kgQuantidade;
+    public String getHistoricoMedico() {
+        return historicoMedico;
     }
 
-    public void setKgQuantidade(int kgQuantidade) {
-        this.kgQuantidade = kgQuantidade;
+    public void setHistoricoMedico(String historicoMedico) {
+        this.historicoMedico = historicoMedico;
     }
 
-    public BigDecimal getValorPago() {
-        return valorPago;
+    public String getIdade() {
+        return idade;
     }
 
-    public void setValorPago(BigDecimal valorPago) {
-        this.valorPago = valorPago;
-    }
-
-    public LocalDate getDataCompra() {
-        return DataCompra;
-    }
-
-    public void setDataCompra(LocalDate dataCompra) {
-        DataCompra = dataCompra;
+    public void setIdade(String idade) {
+        this.idade = idade;
     }
 
     public boolean isAtivo() {

@@ -16,16 +16,15 @@ public record DadosListagemRacao(
         @NotNull
         int kgQuantidade,
         @NotNull
-        BigDecimal valorPago,
+        String historicoMedico,
         @NotNull
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-        LocalDate dataCompra
+        String idade
 ) {
         public DadosListagemRacao (Racao racao){
                 this(   racao.getId(),
                         racao.getNome(),
-                        racao.getKgQuantidade(),
-                        racao.getValorPago(),
-                        racao.getDataCompra());
+                        racao.getKg(),
+                        racao.getHistoricoMedico(),
+                        racao.getIdade());
         }
 }

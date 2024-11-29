@@ -40,18 +40,18 @@ public ResponseEntity cadastrarRacao(@RequestBody @Valid DadosCadastrosRacao dad
     String username = tokenService.getSubject(tokenJWT);
     User user = userRepository.findByLogin(username);
     Long idUsuario = user.getId();
-    return racaoService.cadastrarRacao(dados, idUsuario);
+    return racaoService.cadastrarPet(dados, idUsuario);
 }
 
     @GetMapping
     public Page<DadosListagemRacao> listarRacao(HttpServletRequest request, @PageableDefault(size = 30, sort = {"nome"}) Pageable lista) {
-        return racaoService.listarRacao(request, lista);
+        return racaoService.listarPet(request, lista);
     }
 
     @PutMapping
     @Transactional
     public ResponseEntity atualizarRacao(@RequestBody @Valid DadosAtualizacaoRacao dadosAtualizacao){
-    return racaoService.atualizarRacao(dadosAtualizacao);
+    return racaoService.atualizarPet(dadosAtualizacao);
     }
 
     @DeleteMapping("/{id}")

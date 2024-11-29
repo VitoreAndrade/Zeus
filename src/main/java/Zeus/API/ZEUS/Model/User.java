@@ -16,7 +16,7 @@
     import java.util.List;
 
     @Entity
-    @Table(name = "login")
+    @Table(name = "acesso")
     @Getter
     @Setter
     @NoArgsConstructor

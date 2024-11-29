@@ -15,12 +15,10 @@
                 @NotBlank
                 String nome,
                 @NotNull
-                int kgQuantidade,
+                int kg,
                 @NotNull
-                BigDecimal valorPago,
-                @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-                LocalDate dataCompra
-
+                String historicoMedico,
+                String idade
 
         ){
         }

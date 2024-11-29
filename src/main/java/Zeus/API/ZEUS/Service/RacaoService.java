@@ -9,19 +9,15 @@
     import Zeus.API.ZEUS.Repository.RacaoRepository;
     import Zeus.API.ZEUS.Repository.UserRepository;
     import Zeus.API.ZEUS.Repository.UsuarioRepository;
-    import Zeus.API.ZEUS.infra.Exception.ValidacaoException;
     import jakarta.servlet.http.HttpServletRequest;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.data.domain.Page;
     import org.springframework.data.domain.Pageable;
-    import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
-    import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.stereotype.Service;
 
     import java.math.BigDecimal;
     import java.time.LocalDate;
-    import java.util.Optional;
 
 
     @Service
@@ -46,25 +42,19 @@
     //
     //    }
 
-            public ResponseEntity cadastrarRacao(DadosCadastrosRacao dadosCadastros, Long idUsuario){
+            public ResponseEntity cadastrarPet(DadosCadastrosRacao dadosCadastros, Long idUsuario){
                 Usuario usuario = usuarioRepository.findById(idUsuario)
                         .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + idUsuario));
                 Racao racao = new Racao(dadosCadastros);
-                if(dadosCadastros.dataCompra() == null) {
-                    racao.setDataCompra(LocalDate.now());
-                }else {
-                    racao.setDataCompra(dadosCadastros.dataCompra());
-                }
-                if(dadosCadastros.dataCompra().isAfter(LocalDate.now())){
-                    throw new RuntimeException("Corrija a data");
-                }
+
+
                 racao.setUsuario(usuario);
                 repository.save(racao);
                 return ResponseEntity.ok().build();
             }
 
 
-        public Page<DadosListagemRacao> listarRacao(HttpServletRequest request, Pageable lista) {
+        public Page<DadosListagemRacao> listarPet(HttpServletRequest request, Pageable lista) {
             String tokenJWT = request.getHeader("Authorization").replace("Bearer ", "");
             String username = tokenService.getSubject(tokenJWT);
             User user = userRepository.findByLogin(username);
@@ -73,7 +63,7 @@
             return repository.listarRacaoPorUser(usuarioId, lista).map(DadosListagemRacao::new);
         }
 
-        public ResponseEntity atualizarRacao (DadosAtualizacaoRacao dadosAtualizacao){
+        public ResponseEntity atualizarPet (DadosAtualizacaoRacao dadosAtualizacao){
             Racao racao = repository.findById(dadosAtualizacao.id()).get();
 
        if(dadosAtualizacao.nome() ==null){
@@ -82,30 +72,24 @@
            racao.setNome(dadosAtualizacao.nome());
        }
 
-            switch (dadosAtualizacao.kgQuantidade()) {
+            switch (dadosAtualizacao.kg()) {
                 case 0:
-                    racao.setKgQuantidade(racao.getKgQuantidade());
+                    racao.setKg(racao.getKg());
                     break;
                 default:
-                    racao.setKgQuantidade(dadosAtualizacao.kgQuantidade());
+                    racao.setKg(dadosAtualizacao.kg());
             }
 
 
 
-            if (dadosAtualizacao.dataCompra() == null) {
-                racao.setDataCompra(LocalDate.now());
-            }
-            if(dadosAtualizacao.dataCompra().isAfter(LocalDate.now())){
-                throw new RuntimeException("Verique a sua data");
-            }
-            else {
-                racao.setDataCompra(dadosAtualizacao.dataCompra());
+            if (dadosAtualizacao.historicoMedico() == null) {
+                racao.setHistoricoMedico(dadosAtualizacao.historicoMedico());
             }
 
-            if (!dadosAtualizacao.valorPago().equals(BigDecimal.ZERO)) {
-                racao.setValorPago(racao.getValorPago());
+            if (dadosAtualizacao.idade() == null) {
+                racao.setIdade(racao.getIdade());
             } else {
-                racao.setValorPago(dadosAtualizacao.valorPago());
+                racao.setIdade(dadosAtualizacao.idade());
             }
 
             repository.save(racao);
